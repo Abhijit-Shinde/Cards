@@ -10,6 +10,16 @@ import (
 
 type deck []string
 
+func isEvenOrOdd(nums []int) {
+	for _, num := range nums {
+		if num % 2 == 0 {
+			fmt.Printf("%v is Even \n",num)
+		} else {
+			fmt.Printf("%v is Odd \n",num)
+		}
+	}
+}
+
 func newDeck() deck {
 	cards := deck{}
 
@@ -60,7 +70,7 @@ func (d deck) shuffle() {
 	// 	d[originalPos], d[newPos] = d[newPos], d[originalPos]
 	// }
 
-	rand.Shuffle(len(d),func (i int,j int)  {
+	rand.Shuffle(len(d), func(i int, j int) {
 		d[i], d[j] = d[j], d[i]
 	})
 }
