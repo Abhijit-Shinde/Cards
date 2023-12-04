@@ -2,17 +2,41 @@ package main
 
 import "fmt"
 
+type bot interface{
+	getGreeting() string
+}
+
+type englishBot struct{}
+type spanishBot struct{}
+
 func main() {
-	zeroValue := make(map[string]int)
-	colors := map[string]string{"red": "#eb343d", "green": "#eb343d", "yellow": "#ebe834"}
+	// e := englishBot{}
+	// s := spanishBot{}
 
-	colors["red"] = "34"
+	printGreeting(englishBot{})
+	printGreeting(spanishBot{})
+}
 
-	for a,b := range colors{
-		fmt.Printf("%v Color hash value is %v\n",a,b)
-	}
-	delete(colors,"yellow")
+//w/o interface
+func (eb englishBot) getGreeting() string {
+	return "Hello!"
+} 
 
-	fmt.Println(colors)
-	fmt.Print(zeroValue)
+//w/o interface
+func (sb spanishBot) getGreeting() string {
+	return "Hola!"
+}
+
+// //w/o interface
+// func printGreetingForEnglish (eb englishBot) {
+// 	fmt.Println(eb.getGreeting())
+// }
+
+// //w/o interface
+// func printGreetingForSpanish (sb spanishBot) {
+// 	fmt.Println(sb.getGreeting())
+// }
+
+func printGreeting(b bot) {
+	fmt.Println(b.getGreeting())
 }
