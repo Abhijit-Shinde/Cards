@@ -2,33 +2,35 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"net/http"
-	"os"
 )
 
-type logWriter struct{}
+type shape interface {
+	getArea() float64
+}
 
-func (l logWriter) Write(b []byte) (i int, e error) {
-	fmt.Println(string(b))
-	return len(b), nil
+type triangle struct {
+	height float64
+	base   float64
+}
+type square struct {
+	sideLength float64
+}
+
+func (t triangle) getArea() float64 {
+	return 0.5 * t.base * t.height
+}
+
+func (s square) getArea() float64 {
+	return s.sideLength * s.sideLength
+}
+
+func printArea(s shape) {
+	fmt.Println(s.getArea())
 }
 
 func main() {
-	// resp, _ := http.Get("https://dummyjson.com/products/1")
 
-	// var result map[string]interface{}
-
-	// body, _ := io.ReadAll(resp.Body)
-	// json.Unmarshal(body, &result)
-
-	// fmt.Println(result["products"])
-
-	resp, err := http.Get("http://google.com")
-	if err != nil {
-		fmt.Println("Error: ", err)
-		os.Exit(1)
-	}
-
-	io.Copy(logWriter{}, resp.Body)
+	printArea(triangle{base: 2, height: 3})
+	printArea(square{sideLength: 4})
+	
 }
