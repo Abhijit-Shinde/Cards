@@ -1,42 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
 
-type bot interface{
-	getGreeting() string
+type logWriter struct{}
+
+func (l logWriter) Write(b []byte) (i int, e error) {
+	fmt.Println(string(b))
+	return len(b), nil
 }
-
-type englishBot struct{}
-type spanishBot struct{}
 
 func main() {
-	// e := englishBot{}
-	// s := spanishBot{}
+	// resp, _ := http.Get("https://dummyjson.com/products/1")
 
-	printGreeting(englishBot{})
-	printGreeting(spanishBot{})
-}
+	// var result map[string]interface{}
 
-//w/o interface
-func (eb englishBot) getGreeting() string {
-	return "Hello!"
-} 
+	// body, _ := io.ReadAll(resp.Body)
+	// json.Unmarshal(body, &result)
 
-//w/o interface
-func (sb spanishBot) getGreeting() string {
-	return "Hola!"
-}
+	// fmt.Println(result["products"])
 
-// //w/o interface
-// func printGreetingForEnglish (eb englishBot) {
-// 	fmt.Println(eb.getGreeting())
-// }
+	resp, err := http.Get("http://google.com")
+	if err != nil {
+		fmt.Println("Error: ", err)
+		os.Exit(1)
+	}
 
-// //w/o interface
-// func printGreetingForSpanish (sb spanishBot) {
-// 	fmt.Println(sb.getGreeting())
-// }
-
-func printGreeting(b bot) {
-	fmt.Println(b.getGreeting())
+	io.Copy(logWriter{}, resp.Body)
 }
